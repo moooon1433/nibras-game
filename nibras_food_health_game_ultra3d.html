@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>مغامرة نبراس الغذائية — النسخة ثلاثية الأبعاد</title>
+<style>
+:root{
+  --bg:#071a17; --panel:#0c2a24ee; --panel2:#123a31f2; --line:#2f6b5a;
+  --mint:#66d6a1; --gold:#f4c85c; --text:#f7fff9; --muted:#b9d8ce;
+  --red:#ef6b6b; --shadow:0 28px 70px #0009;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Tahoma,Arial,sans-serif;background:#061512;color:var(--text)}
+body{
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 50% -10%,#265a47 0 0,#13392f 18%,transparent 42%),
+    linear-gradient(#071a17,#04100e);
+  overflow-x:hidden;
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;opacity:.5;
+  background:
+    radial-gradient(circle at 10% 20%,#2ca56b33 0 2px,transparent 3px) 0 0/44px 44px,
+    radial-gradient(circle at 85% 35%,#f7d66b22 0 2px,transparent 3px) 0 0/57px 57px;
+}
+body:after{
+  content:"";position:fixed;inset:auto 0 0;height:36vh;z-index:-1;
+  background:
+    radial-gradient(ellipse at 12% 100%,#194532 0 25%,transparent 26%),
+    radial-gradient(ellipse at 37% 100%,#113d2c 0 28%,transparent 29%),
+    radial-gradient(ellipse at 70% 100%,#1b4b34 0 24%,transparent 25%),
+    radial-gradient(ellipse at 95% 100%,#0e3527 0 28%,transparent 29%);
+  filter:blur(3px);
+}
+button{font:inherit}
+.app{max-width:1180px;margin:auto;padding:16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;color:#dbffe9}
+.logo{
+ width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:900;
+ background:linear-gradient(145deg,#6ee0a7,#2e8b63);color:#062117;
+ box-shadow:inset 5px 5px 10px #b8ffd4aa,inset -8px -8px 13px #0d513b88,0 10px 0 #0a4a35,0 18px 30px #0007;
+ transform:rotateY(-10deg) rotateX(5deg)
+}
+.hud{display:flex;gap:9px;flex-wrap:wrap}
+.pill{
+ background:linear-gradient(145deg,#163d33,#0c261f);border:1px solid #3c7362;border-radius:999px;
+ padding:9px 14px;font-weight:900;box-shadow:inset 2px 2px 0 #ffffff10,0 8px 18px #0006
+}
+.shell{
+ min-height:720px;position:relative;overflow:hidden;border-radius:30px;border:1px solid #3a7663;
+ background:linear-gradient(180deg,#0c2a24ed,#061c17f4);box-shadow:var(--shadow),inset 0 1px 0 #ffffff14;
+ backdrop-filter:blur(12px)
+}
+.shell:before{
+ content:"";position:absolute;inset:0;pointer-events:none;opacity:.85;
+ background:
+   radial-gradient(circle at 6% 10%,#69e0a51a 0 18%,transparent 19%),
+   radial-gradient(circle at 95% 20%,#f3cb6813 0 16%,transparent 17%),
+   linear-gradient(90deg,transparent 0 49.8%,#ffffff05 50%,transparent 50.2%);
+}
+.progress-wrap{position:relative;z-index:5;padding:16px 20px 0}
+.progress{height:10px;border-radius:999px;background:#092019;overflow:hidden;border:1px solid #285343}
+.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#5fe09d,#e8d56c);box-shadow:0 0 18px #5fe09daa;transition:.45s}
+.screen{display:none;position:relative;z-index:3;padding:26px}.screen.active{display:block}
+.scene{
+ border-radius:26px;position:relative;overflow:hidden;border:1px solid #366d5c;
+ background:
+   linear-gradient(180deg,#10372dee,#08231ded),
+   radial-gradient(circle at 50% 10%,#4a9f7644,transparent 50%);
+ box-shadow:inset 0 1px 0 #ffffff14,0 18px 40px #0005;
+}
+.scene:before{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:
+   linear-gradient(115deg,transparent 0 38%,#ffffff0b 40%,transparent 42%),
+   radial-gradient(circle at 20% 18%,#d6ffe92b 0 2px,transparent 3px) 0 0/38px 38px;
+ opacity:.8
+}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:24px;min-height:590px;align-items:center;padding:28px}
+.hero-copy{position:relative;z-index:2}.tag{display:inline-block;padding:8px 12px;border-radius:999px;background:#173f34;border:1px solid #3d7b66;color:#dff9eb;font-weight:900}
+h1{font-size:48px;line-height:1.1;margin:16px 0 12px;color:#effff5;text-shadow:0 6px 18px #000}
+.hero-copy p{font-size:20px;line-height:1.9;color:var(--muted)}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.badge{padding:8px 10px;border-radius:12px;background:#102f27;border:1px solid #2e6654;color:#d6efe6;font-weight:800}
+.btn{border:0;border-radius:16px;padding:14px 22px;font-weight:900;cursor:pointer;transition:.2s}
+.btn-primary{color:#092118;background:linear-gradient(145deg,#7ce5ad,#44ae7a);box-shadow:0 8px 0 #237653,0 15px 24px #0007}
+.btn-primary:active{transform:translateY(4px);box-shadow:0 4px 0 #237653,0 9px 15px #0007}
+.btn-dark{color:#eafff2;background:linear-gradient(145deg,#21483d,#102d25);border:1px solid #3e7462}
+.hero-art{display:grid;place-items:center;min-height:500px;position:relative;perspective:1000px}
+.world{
+ width:380px;height:380px;border-radius:50%;position:relative;transform-style:preserve-3d;
+ background:radial-gradient(circle at 33% 26%,#86dca7 0 3%,#286846 22%,#123b2c 56%,#071a17 72%);
+ box-shadow:inset 18px 18px 34px #9affbd29,inset -30px -32px 45px #0009,0 38px 40px #0009,0 0 0 12px #ffffff0a;
+ animation:worldfloat 5s ease-in-out infinite
+}
+@keyframes worldfloat{50%{transform:translateY(-12px) rotateY(7deg) rotateX(3deg)}}
+.table3d{
+ position:absolute;left:50%;top:56%;width:280px;height:130px;transform:translate(-50%,-50%) rotateX(68deg);
+ background:linear-gradient(145deg,#b97c4b,#774626);border-radius:50%;box-shadow:0 30px 30px #0007,inset 8px 8px 16px #f3b57a55
+}
+.asset{position:absolute;filter:drop-shadow(0 18px 10px #0008);animation:float 4s ease-in-out infinite}
+.a1{right:35px;top:50px}.a2{left:35px;top:78px;animation-delay:-1s}.a3{right:55px;bottom:50px;animation-delay:-2s}.a4{left:58px;bottom:48px;animation-delay:-2.8s}
+@keyframes float{50%{transform:translateY(-10px) rotate(3deg)}}
+.stage-head{display:flex;align-items:center;gap:14px;margin:0 0 14px}.stage-icon{
+ width:60px;height:60px;border-radius:18px;display:grid;place-items:center;font-size:30px;
+ background:linear-gradient(145deg,#f5d875,#c7922f);box-shadow:inset 5px 5px 10px #fff6ad77,inset -8px -8px 14px #8f6429aa,0 8px 0 #8b6427,0 16px 24px #0006
+}
+h2{margin:0;color:#f4fff8;font-size:30px}.lead{color:#bad9cf;font-size:18px;line-height:1.7}
+.panel{padding:20px;border-radius:22px;background:linear-gradient(145deg,#11362cee,#0b251fee);border:1px solid #356b5a;box-shadow:inset 0 1px 0 #ffffff12,0 14px 30px #0005}
+.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.option,.chip,.match-card,.pick{
+ color:#eafff2;background:linear-gradient(145deg,#183f35,#0d2b24);border:1px solid #3b715f;border-radius:17px;
+ padding:16px;font-weight:900;cursor:pointer;box-shadow:inset 2px 2px 0 #ffffff10,0 7px 0 #071b16,0 13px 22px #0006;
+ transition:.2s;position:relative;overflow:hidden
+}
+.option:hover,.chip:hover,.match-card:hover,.pick:hover{transform:translateY(-3px);border-color:#6dc59c}
+.option.correct,.match-card.done,.pick.on{background:linear-gradient(145deg,#236846,#154833);border-color:#7ee1aa;box-shadow:0 7px 0 #0a3c28,0 0 22px #62d69a55}
+.option.wrong{background:linear-gradient(145deg,#6c2a2a,#3c1717);border-color:#ef7777}
+.feedback{display:none;margin-top:14px;padding:12px 14px;border-radius:14px;font-weight:900}.feedback.show{display:block}.feedback.ok{background:#173f2e;color:#b9ffd5;border:1px solid #4f9c74}.feedback.no{background:#482020;color:#ffd5d5;border:1px solid #a95757}
+.row-actions{margin-top:14px;display:flex;justify-content:flex-start}
+.items{display:flex;flex-wrap:wrap;gap:10px}.chip.selected{outline:3px solid var(--gold)}
+.sort-board{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}.bucket{min-height:120px}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.foods,.funcs{display:grid;gap:10px}.match-card.sel{outline:3px solid var(--gold)}
+.timer{height:11px;background:#061510;border-radius:999px;overflow:hidden;border:1px solid #2c5b4c;margin:14px 0}.timer i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#54d591,#e6c95e,#ef6a6a)}
+.plate-builder{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:center}
+.plate-wrap{display:grid;place-items:center;min-height:430px;perspective:1000px}
+.plate3d{
+ width:360px;height:360px;border-radius:50%;position:relative;transform:rotateX(18deg) rotateZ(-2deg);
+ background:radial-gradient(circle at 34% 26%,#fff 0 37%,#e8efec 55%,#aab9b2 78%,#75847e 100%);
+ border:18px solid #dce5e1;box-shadow:inset 22px 20px 30px #fff,inset -28px -32px 32px #667a7188,0 38px 42px #000a
+}
+.plate3d:after{content:"";position:absolute;inset:42px;border-radius:50%;box-shadow:inset 0 0 22px #71877c55}
+.food-slot{position:absolute;display:grid;place-items:center;filter:drop-shadow(0 18px 9px #0007);transition:.25s;opacity:.12;transform:scale(.75)}
+.food-slot.visible{opacity:1;transform:scale(1)}
+.fs1{right:62px;top:58px}.fs2{left:64px;top:62px}.fs3{right:72px;bottom:60px}.fs4{left:70px;bottom:62px}.fs5{left:50%;top:50%;transform:translate(-50%,-50%) scale(.75)}.fs5.visible{transform:translate(-50%,-50%) scale(1)}
+.food-picks{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.pick{min-height:98px;text-align:center}.pick svg{height:54px;width:70px;display:block;margin:auto auto 4px;filter:drop-shadow(0 12px 7px #0007)}
+.final{text-align:center;padding:30px}.trophy{font-size:110px;filter:drop-shadow(0 20px 12px #0007);animation:float 2.5s ease-in-out infinite}.score-big{font-size:54px;font-weight:900;color:#a8f0c5}.stars{font-size:40px}.summary{max-width:680px;margin:18px auto;padding:18px;border-radius:18px;background:#0e2f27;border:1px solid #346653;color:#cbe6dc;line-height:1.8}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}.confetti span{position:absolute;top:-30px;animation:fall 3.7s linear infinite}@keyframes fall{to{transform:translateY(760px) rotate(420deg)}}
+@media(max-width:780px){
+ .hero,.plate-builder,.options,.sort-board,.match-grid{grid-template-columns:1fr}
+ .hero{padding:18px}.hero-art{min-height:390px}.world{width:300px;height:300px}.hero-copy h1{font-size:36px}
+ .plate3d{width:290px;height:290px}.screen{padding:17px}.shell{min-height:760px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand"><div class="logo">ن</div> نبراس التعليمية</div>
+    <div class="hud"><div class="pill">⭐ <span id="score">0</span></div><div class="pill">🏅 <span id="stageNum">0</span>/6</div><div class="pill">🔥 <span id="streak">0</span></div></div>
+  </div>
+  <div class="shell">
+    <div class="progress-wrap"><div class="progress"><i id="bar"></i></div></div>
+
+    <section class="screen active" id="s0">
+      <div class="scene hero">
+        <div class="hero-copy">
+          <span class="tag">علوم رابع • الغذاء وصحة الجسم</span>
+          <h1>مغامرة نبراس الغذائية</h1>
+          <p>ادخلي عالمًا غذائيًا تفاعليًا، واجمعي الشارات عبر التصنيف والمطابقة والتحديات وبناء طبق متوازن.</p>
+          <div class="badges"><span class="badge">🎯 6 مراحل</span><span class="badge">⚡ نقاط وسلسلة نجاح</span><span class="badge">🏆 وسام نهائي</span></div>
+          <button class="btn btn-primary" onclick="go(1)">ابدأ المغامرة 🚀</button>
+        </div>
+        <div class="hero-art">
+          <div class="world">
+            <div class="table3d"></div>
+            <div class="asset a1"><svg width="86" height="86" viewBox="0 0 100 100"><defs><radialGradient id="g1"><stop offset="0" stop-color="#fff59a"/><stop offset=".55" stop-color="#ffb32f"/><stop offset="1" stop-color="#d86814"/></radialGradient></defs><circle cx="50" cy="50" r="34" fill="url(#g1)"/><path d="M49 14c5-11 15-14 24-10-8 5-13 11-16 18z" fill="#64b75e"/><path d="M28 45c15-9 30-10 45-2" fill="none" stroke="#e87a15" stroke-width="3" opacity=".55"/></svg></div>
+            <div class="asset a2"><svg width="90" height="90" viewBox="0 0 100 100"><defs><linearGradient id="av" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ee37d"/><stop offset=".5" stop-color="#4b9f4b"/><stop offset="1" stop-color="#1f572c"/></linearGradient></defs><path d="M50 10c25 0 38 24 31 49-7 27-25 34-31 31-7 3-25-4-32-31C11 34 25 10 50 10z" fill="url(#av)"/><ellipse cx="51" cy="53" rx="20" ry="26" fill="#d7ef8d"/><circle cx="51" cy="55" r="10" fill="#8d552c"/></svg></div>
+            <div class="asset a3"><svg width="82" height="100" viewBox="0 0 90 110"><defs><linearGradient id="wg" x1="0" x2="1"><stop stop-color="#c7f3ff"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#8fd4ed"/></linearGradient></defs><path d="M20 15h50l-7 80c-1 8-36 8-37 0z" fill="url(#wg)" opacity=".92" stroke="#dff8ff" stroke-width="3"/><path d="M26 47h38l-4 44c-3 7-28 7-31 0z" fill="#61c7ef" opacity=".65"/></svg></div>
+            <div class="asset a4"><svg width="100" height="88" viewBox="0 0 110 95"><defs><linearGradient id="br" x1="0" x2="1"><stop stop-color="#f7d59a"/><stop offset=".5" stop-color="#d5954c"/><stop offset="1" stop-color="#a95c27"/></linearGradient></defs><path d="M16 69c0-29 19-48 44-48 17 0 33 9 38 28 4 15-7 28-21 28H28c-7 0-12-3-12-8z" fill="url(#br)"/><path d="M43 28c8 8 10 19 6 34M61 25c8 8 10 18 7 35M78 32c7 8 7 16 4 27" fill="none" stroke="#8d572e" stroke-width="4" opacity=".6"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="s1">
+      <div class="stage-head"><div class="stage-icon">🔍</div><div><h2>المرحلة 1: اكتشفي المفهوم</h2><div class="lead">اختاري التعريف الصحيح للغذاء المتوازن.</div></div></div>
+      <div class="panel"><div class="options">
+        <button class="option" onclick="choice(this,true,'ممتاز! الغذاء المتوازن يجمع أنواع الغذاء التي يحتاجها الجسم بكميات مناسبة.')">وجبة تحتوي على جميع أنواع الغذاء التي يحتاجها الجسم وبكميات مناسبة.</button>
+        <button class="option" onclick="choice(this,false,'ليس المقصود كمية كبيرة من نوع واحد.')">وجبة كبيرة جدًا من نوع واحد فقط.</button>
+        <button class="option" onclick="choice(this,false,'الحلوى وحدها لا تغطي احتياجات الجسم.')">وجبة تتكوّن من الحلويات فقط.</button>
+        <button class="option" onclick="choice(this,false,'التوازن مرتبط بالتنوع والكمية المناسبة، لا باللون.')">وجبة أطعمتها من اللون نفسه.</button>
+      </div><div class="feedback" id="f1"></div><div class="row-actions"><button class="btn btn-dark" id="n1" style="display:none" onclick="go(2)">التالي ←</button></div></div>
+    </section>
+
+    <section class="screen" id="s2">
+      <div class="stage-head"><div class="stage-icon">🧺</div><div><h2>المرحلة 2: صنّفي بسرعة</h2><div class="lead">اختاري العنصر ثم حددي هل هو من المجموعات الغذائية الست أم لا.</div></div></div>
+      <div class="panel">
+        <div class="items" id="chips">
+          <button class="chip" data-ok="1">🍞 الكربوهيدرات</button><button class="chip" data-ok="1">🥚 البروتينات</button>
+          <button class="chip" data-ok="1">🥑 الدهون</button><button class="chip" data-ok="1">🍊 الفيتامينات</button>
+          <button class="chip" data-ok="1">🧂 الأملاح المعدنية</button><button class="chip" data-ok="1">💧 الماء</button>
+          <button class="chip" data-ok="0">🍭 السكريات</button><button class="chip" data-ok="0">🍔 الوجبات السريعة</button>
+        </div>
+        <div class="sort-board"><button class="option bucket" onclick="classify(1)">✅ من المجموعات الست</button><button class="option bucket" onclick="classify(0)">❌ ليست مجموعة مستقلة في الدرس</button></div>
+        <div class="feedback" id="f2"></div><div class="row-actions"><button class="btn btn-dark" id="n2" style="display:none" onclick="go(3)">التالي ←</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s3">
+      <div class="stage-head"><div class="stage-icon">🧩</div><div><h2>المرحلة 3: طابقي الوظيفة</h2><div class="lead">اختاري مجموعة غذائية ثم وظيفتها الصحيحة.</div></div></div>
+      <div class="panel"><div class="match-grid">
+        <div class="foods" id="foods">
+          <button class="match-card" data-key="carb">🍞 الكربوهيدرات</button><button class="match-card" data-key="protein">🥚 البروتينات</button>
+          <button class="match-card" data-key="vit">🍊 الفيتامينات</button><button class="match-card" data-key="water">💧 الماء</button>
+        </div>
+        <div class="funcs" id="funcs">
+          <button class="match-card" data-key="protein">تساعد على النمو وتعويض الخلايا التالفة</button>
+          <button class="match-card" data-key="water">تساعد في الهضم والتخلص من الفضلات وتنظيم الحرارة</button>
+          <button class="match-card" data-key="carb">المصدر الرئيس للطاقة في الجسم</button>
+          <button class="match-card" data-key="vit">تحافظ على صحة الجسم وتقي من بعض الأمراض</button>
+        </div>
+      </div><div class="feedback" id="f3"></div><div class="row-actions"><button class="btn btn-dark" id="n3" style="display:none" onclick="go(4)">التالي ←</button></div></div>
+    </section>
+
+    <section class="screen" id="s4">
+      <div class="stage-head"><div class="stage-icon">⚡</div><div><h2>المرحلة 4: من أنا؟</h2><div class="lead">اكتشفي المجموعة من التلميح قبل انتهاء المؤقت.</div></div></div>
+      <div class="panel"><div class="timer"><i id="timerBar"></i></div>
+        <div style="font-size:24px;line-height:1.8;padding:20px;border-radius:18px;background:#0d2f27;border:1px solid #476f57">أنا المصدر الرئيس للطاقة في الجسم، ومن مصادري الخبز والتمر والبطاطس والأرز. من أنا؟</div>
+        <div class="options"><button class="option" onclick="choice(this,true,'أحسنتِ! الكربوهيدرات هي المصدر الرئيس للطاقة في الجسم.')">🍞 الكربوهيدرات</button><button class="option" onclick="choice(this,false,'البروتينات مرتبطة بالنمو وتعويض الخلايا التالفة.')">🥚 البروتينات</button><button class="option" onclick="choice(this,false,'الفيتامينات دورها حماية صحة الجسم.')">🍊 الفيتامينات</button><button class="option" onclick="choice(this,false,'الماء مهم جدًا لكنه ليس المقصود هنا.')">💧 الماء</button></div>
+        <div class="feedback" id="f4"></div><div class="row-actions"><button class="btn btn-dark" id="n4" style="display:none" onclick="go(5)">التالي ←</button></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s5">
+      <div class="stage-head"><div class="stage-icon">🍽️</div><div><h2>المرحلة 5: ابنِ طبقك</h2><div class="lead">اختاري على الأقل 4 مكونات مناسبة، ثم تحققي من الطبق.</div></div></div>
+      <div class="panel plate-builder">
+        <div class="plate-wrap"><div class="plate3d">
+          <div class="food-slot fs1" id="slot-rice"><svg width="90" height="80" viewBox="0 0 100 90"><ellipse cx="50" cy="64" rx="36" ry="14" fill="#c9d0d1"/><ellipse cx="50" cy="57" rx="34" ry="14" fill="#fff"/><g fill="#fff6cc"><ellipse cx="32" cy="48" rx="13" ry="5"/><ellipse cx="50" cy="45" rx="14" ry="5"/><ellipse cx="66" cy="50" rx="13" ry="5"/><ellipse cx="44" cy="55" rx="14" ry="5"/><ellipse cx="60" cy="57" rx="12" ry="5"/></g></svg></div>
+          <div class="food-slot fs2" id="slot-chicken"><svg width="95" height="85" viewBox="0 0 100 90"><defs><linearGradient id="cg" x1="0" x2="1"><stop stop-color="#ffcf85"/><stop offset=".6" stop-color="#c87532"/><stop offset="1" stop-color="#7d3d1f"/></linearGradient></defs><path d="M30 20c25-10 48 8 45 29-2 17-21 28-42 23C12 67 11 31 30 20z" fill="url(#cg)"/><rect x="69" y="49" width="20" height="8" rx="4" fill="#f6e6cf" transform="rotate(22 69 49)"/></svg></div>
+          <div class="food-slot fs3" id="slot-salad"><svg width="100" height="85" viewBox="0 0 100 90"><ellipse cx="50" cy="68" rx="36" ry="13" fill="#aabcb3"/><path d="M20 48c9-18 23-21 32-8 8-18 26-14 29 3 12 0 16 17 4 22H25c-14-3-14-13-5-17z" fill="#54a94f"/><circle cx="38" cy="46" r="8" fill="#e75346"/><circle cx="63" cy="52" r="8" fill="#f4d65a"/><circle cx="51" cy="59" r="7" fill="#9bd85c"/></svg></div>
+          <div class="food-slot fs4" id="slot-milk"><svg width="80" height="100" viewBox="0 0 80 110"><defs><linearGradient id="mg" x1="0" x2="1"><stop stop-color="#ffffff"/><stop offset=".5" stop-color="#d9f2ff"/><stop offset="1" stop-color="#8cc4e5"/></linearGradient></defs><path d="M22 20h36l-4 74c-1 8-29 8-30 0z" fill="url(#mg)"/><path d="M24 52h31l-2 40c-3 6-24 6-27 0z" fill="#f7fbff"/><rect x="20" y="15" width="40" height="9" rx="4" fill="#8fc5e6"/></svg></div>
+          <div class="food-slot fs5" id="slot-water"><svg width="74" height="96" viewBox="0 0 80 105"><defs><linearGradient id="w2" x1="0" x2="1"><stop stop-color="#d8f8ff"/><stop offset=".5" stop-color="#fff"/><stop offset="1" stop-color="#8bd4ed"/></linearGradient></defs><path d="M18 15h44l-6 76c-1 8-31 8-32 0z" fill="url(#w2)" opacity=".9"/><path d="M24 49h32l-3 39c-2 7-24 7-27 0z" fill="#61c8ef" opacity=".7"/></svg></div>
+        </div></div>
+        <div><div class="food-picks" id="picks">
+          <button type="button" class="pick" data-good="1" data-slot="slot-rice"><svg viewBox="0 0 100 90"><ellipse cx="50" cy="64" rx="36" ry="14" fill="#c9d0d1"/><ellipse cx="50" cy="57" rx="34" ry="14" fill="#fff"/><g fill="#fff6cc"><ellipse cx="32" cy="48" rx="13" ry="5"/><ellipse cx="50" cy="45" rx="14" ry="5"/><ellipse cx="66" cy="50" rx="13" ry="5"/></g></svg>أرز</button>
+          <button type="button" class="pick" data-good="1" data-slot="slot-chicken"><svg viewBox="0 0 100 90"><defs><linearGradient id="pc" x1="0" x2="1"><stop stop-color="#ffcf85"/><stop offset=".6" stop-color="#c87532"/><stop offset="1" stop-color="#7d3d1f"/></linearGradient></defs><path d="M30 20c25-10 48 8 45 29-2 17-21 28-42 23C12 67 11 31 30 20z" fill="url(#pc)"/></svg>دجاج</button>
+          <button type="button" class="pick" data-good="1" data-slot="slot-salad"><svg viewBox="0 0 100 90"><path d="M20 48c9-18 23-21 32-8 8-18 26-14 29 3 12 0 16 17 4 22H25c-14-3-14-13-5-17z" fill="#54a94f"/><circle cx="38" cy="46" r="8" fill="#e75346"/><circle cx="63" cy="52" r="8" fill="#f4d65a"/></svg>خضار</button>
+          <button type="button" class="pick" data-good="1" data-slot="slot-milk"><svg viewBox="0 0 80 110"><path d="M22 20h36l-4 74c-1 8-29 8-30 0z" fill="#dff5ff"/><path d="M24 52h31l-2 40c-3 6-24 6-27 0z" fill="#fff"/></svg>حليب</button>
+          <button type="button" class="pick" data-good="1" data-slot="slot-water"><svg viewBox="0 0 80 105"><path d="M18 15h44l-6 76c-1 8-31 8-32 0z" fill="#d9f8ff"/><path d="M24 49h32l-3 39c-2 7-24 7-27 0z" fill="#63c9ef"/></svg>ماء</button>
+          <button type="button" class="pick" data-good="0"><svg viewBox="0 0 100 90"><circle cx="50" cy="47" r="24" fill="#f59ac0"/><path d="M21 47h13M66 47h13" stroke="#fff" stroke-width="8" stroke-linecap="round"/></svg>حلوى</button>
+        </div>
+        <button type="button" class="btn btn-primary" style="margin-top:16px" id="checkPlateBtn">تحقق من الطبق ✨</button>
+        <div class="feedback" id="f5"></div><div class="row-actions"><button class="btn btn-dark" id="n5" style="display:none" onclick="go(6)">التحدي الأخير ←</button></div></div>
+      </div>
+    </section>
+
+    <section class="screen" id="s6">
+      <div class="stage-head"><div class="stage-icon">🚨</div><div><h2>المرحلة 6: القرار الصحي</h2><div class="lead">طالبة تتناول الحلوى فقط في الفسحة وتنسى شرب الماء. ما أفضل نصيحة؟</div></div></div>
+      <div class="panel"><div class="options">
+        <button class="option" onclick="choice(this,true,'اختيار ممتاز! التنوع وشرب الماء يساعدان الجسم على أداء وظائفه بصورة أفضل.')">اختيار وجبة متنوعة من مجموعات مختلفة وشرب الماء بانتظام.</button>
+        <button class="option" onclick="choice(this,false,'الحلوى وحدها لا تحقق التوازن الغذائي.')">زيادة كمية الحلوى حتى تحصل على طاقة أكثر.</button>
+        <button class="option" onclick="choice(this,false,'الجسم يحتاج الماء يوميًا، وليس فقط بعد الرياضة.')">شرب الماء فقط في أيام الرياضة.</button>
+        <button class="option" onclick="choice(this,false,'التوازن لا يعني حذف الطعام كله، بل تنويع الغذاء بكميات مناسبة.')">الامتناع عن الطعام في الفسحة.</button>
+      </div><div class="feedback" id="f6"></div><div class="row-actions"><button class="btn btn-dark" id="n6" style="display:none" onclick="finish()">عرض النتيجة 🏆</button></div></div>
+    </section>
+
+    <section class="screen" id="s7"><div class="confetti" id="confetti"></div><div class="final"><div class="trophy">🏆</div><h2>وسام خبيرة الغذاء</h2><div class="score-big"><span id="finalScore">0</span> / 60</div><div class="stars" id="stars">⭐⭐⭐</div><div class="summary" id="summary"></div><button class="btn btn-primary" onclick="restart()">إعادة المغامرة ↻</button></div></section>
+  </div>
+</div>
+
+<script>
+let current=0,score=0,streak=0,done={},selectedChip=null,matched=0,selFood=null,timerId=null;
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+function updateHud(){ $('#score').textContent=Math.round(score); $('#streak').textContent=streak; $('#stageNum').textContent=Math.min(current,6); $('#bar').style.width=(Math.min(current,6)/6*100)+'%';}
+function go(n){ $$('.screen').forEach(x=>x.classList.remove('active')); $('#s'+n).classList.add('active'); current=n; updateHud(); window.scrollTo({top:0,behavior:'smooth'}); if(n===4) startTimer(); }
+function award(p=10){score+=p;streak++;updateHud()}
+function choice(btn,ok,msg){
+ if(done[current])return; const f=$('#f'+current);
+ if(ok){done[current]=true;award();btn.classList.add('correct');f.className='feedback show ok';f.textContent='⭐ '+msg;$('#n'+current).style.display='inline-block';btn.parentElement.querySelectorAll('.option').forEach(b=>b.disabled=true);clearInterval(timerId)}
+ else{streak=0;updateHud();btn.classList.add('wrong');f.className='feedback show no';f.textContent='💡 '+msg+' حاولي مرة أخرى.';setTimeout(()=>btn.classList.remove('wrong'),650)}
+}
+$$('#chips .chip').forEach(ch=>ch.addEventListener('click',()=>{if(ch.dataset.done)return;$$('#chips .chip').forEach(x=>x.classList.remove('selected'));selectedChip=ch;ch.classList.add('selected')}));
+function classify(v){if(!selectedChip)return;const f=$('#f2');if(Number(selectedChip.dataset.ok)===v){selectedChip.style.opacity=.35;selectedChip.dataset.done='1';selectedChip.classList.remove('selected');selectedChip=null;award(1.25);let left=[...$$('#chips .chip')].filter(x=>!x.dataset.done).length;f.className='feedback show ok';f.textContent=left?'✅ تصنيف صحيح! واصلي.':'🌟 رائع! صنّفتِ جميع العناصر.';if(!left){done[2]=true;$('#n2').style.display='inline-block'}}else{streak=0;updateHud();f.className='feedback show no';f.textContent='ليس هذا التصنيف الصحيح، جرّبي الجهة الأخرى.'}}
+$$('#foods .match-card').forEach(c=>c.addEventListener('click',()=>{if(c.classList.contains('done'))return;$$('#foods .match-card').forEach(x=>x.classList.remove('sel'));selFood=c;c.classList.add('sel')}));
+$$('#funcs .match-card').forEach(c=>c.addEventListener('click',()=>{if(c.classList.contains('done')||!selFood)return;const f=$('#f3');if(c.dataset.key===selFood.dataset.key){c.classList.add('done');selFood.classList.add('done');selFood.classList.remove('sel');selFood=null;matched++;award(2.5);f.className='feedback show ok';f.textContent='✅ مطابقة صحيحة!';if(matched===4){done[3]=true;$('#n3').style.display='inline-block';f.textContent='🌟 ممتاز! أكملتِ جميع المطابقات.'}}else{streak=0;updateHud();f.className='feedback show no';f.textContent='هذه الوظيفة لا تنتمي إلى المجموعة المختارة.'}}));
+function startTimer(){clearInterval(timerId);let t=100;const bar=$('#timerBar');bar.style.width='100%';timerId=setInterval(()=>{t--;bar.style.width=t+'%';if(t<=0)clearInterval(timerId)},90)}
+
+// FIXED PLATE STAGE — robust click handling
+function togglePick(btn){
+  btn.classList.toggle('on');
+  const id=btn.dataset.slot;
+  if(id){
+    const slot=document.getElementById(id);
+    if(slot) slot.classList.toggle('visible',btn.classList.contains('on'));
+  }
+}
+document.querySelectorAll('#picks .pick').forEach(btn=>{
+  btn.addEventListener('click',function(ev){ev.preventDefault();ev.stopPropagation();togglePick(this);});
+});
+document.getElementById('checkPlateBtn').addEventListener('click',function(ev){ev.preventDefault();checkPlate();});
+function checkPlate(){
+ const chosen=[...document.querySelectorAll('#picks .pick.on')];
+ const good=chosen.filter(x=>x.dataset.good==='1').length,bad=chosen.filter(x=>x.dataset.good==='0').length,f=$('#f5');
+ if(good>=4&&bad===0){if(!done[5]){done[5]=true;award()}f.className='feedback show ok';f.textContent='🥗 طبق متوازن رائع! جمعتِ مجموعات غذائية متنوعة مع الماء.';$('#n5').style.display='inline-block'}
+ else{streak=0;updateHud();f.className='feedback show no';f.textContent='اختاري 4 مكونات صحية على الأقل، وتجنبي الحلوى كعنصر أساسي.'}
+}
+function finish(){go(7);$('#bar').style.width='100%';$('#finalScore').textContent=Math.round(score);$('#stars').textContent=score>=55?'⭐⭐⭐':score>=42?'⭐⭐':'⭐';$('#summary').innerHTML=score>=55?'<b>أداء ممتاز!</b><br>أتقنتِ مفهوم الغذاء المتوازن والمجموعات الغذائية ووظائفها.':score>=42?'<b>أداء جيد جدًا!</b><br>أعيدي المحاولة للوصول إلى الوسام الكامل.':'<b>بداية جيدة!</b><br>راجعي وظائف المجموعات الغذائية ثم أعيدي المغامرة.';makeConfetti()}
+function makeConfetti(){const c=$('#confetti');c.innerHTML='';['⭐','✨','🥑','🍊','💧'].forEach(e=>{for(let j=0;j<7;j++){let s=document.createElement('span');s.textContent=e;s.style.left=Math.random()*100+'%';s.style.animationDelay=Math.random()*2+'s';s.style.fontSize=(18+Math.random()*20)+'px';c.appendChild(s)}})}
+function restart(){
+ score=0;streak=0;done={};selectedChip=null;matched=0;selFood=null;clearInterval(timerId);
+ $$('.option').forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong')});
+ $$('.feedback').forEach(f=>{f.className='feedback';f.textContent=''});
+ ['n1','n2','n3','n4','n5','n6'].forEach(id=>{const b=document.getElementById(id);if(b)b.style.display='none'});
+ $$('#chips .chip').forEach(x=>{x.style.opacity=1;delete x.dataset.done;x.classList.remove('selected')});
+ $$('.match-card').forEach(x=>x.classList.remove('done','sel'));
+ $$('#picks .pick').forEach(x=>x.classList.remove('on'));$$('.food-slot').forEach(x=>x.classList.remove('visible'));
+ go(1)
+}
+updateHud();
+</script>
+</body>
+</html>
